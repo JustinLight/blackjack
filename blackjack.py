@@ -8,7 +8,7 @@ values = {'Two':2, 'Three':3, 'Four':4, 'Five':5, 'Six':6, 'Seven':7, 'Eight':8,
 playing = True
 deck=[]
 
-class Blackjack():
+class Deck:
     def __init__(self,suits,ranks):
         self.deck=[]
         for suit in suits:
@@ -24,7 +24,7 @@ class Blackjack():
     def deal(self):
         Hand.add_card(deck.pop(0))
 
-class Hand():
+class Hand:
     def __init__(self,card):
         self.cards = []
         self.value = 0
@@ -37,3 +37,49 @@ class Hand():
 
     def adjust_for_ace(self):
         pass
+
+class Chips:
+    def __init__(self):
+        self.total = 100
+        self.bet = 0
+
+    def win_bet(self):
+        self.total = self.total+self.bet
+
+    def lose_bet(self):
+        self.total = self.total-self.bet
+
+def take_bet():
+    Chips.self.bet()=int(input("How much do you want to bet?"))
+
+def hit(deck,hand):
+
+    pass
+
+def hit_or_stand(deck,hand):
+    global playing  # to control an upcoming while loop
+
+    pass
+
+def show_some(player,dealer):
+
+    pass
+
+def show_all(player,dealer):
+
+    pass
+
+def player_busts():
+    pass
+
+def player_wins():
+    pass
+
+def dealer_busts():
+    pass
+
+def dealer_wins():
+    pass
+
+def push():
+    pass
