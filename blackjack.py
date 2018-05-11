@@ -8,6 +8,15 @@ values = {'Two':2, 'Three':3, 'Four':4, 'Five':5, 'Six':6, 'Seven':7, 'Eight':8,
 playing = True
 deck=[]
 
+class Card:
+
+    def __init__(self,card):
+        self.suit=card[1]
+        self.rank=card[0]
+
+    def __str__(self):
+        return f'{self.rank} of {self.suit}'
+
 class Deck:
     def __init__(self,suits,ranks):
         self.deck=[]
@@ -15,24 +24,32 @@ class Deck:
             for rank in ranks:
                 self.deck.append((rank,suit))
 
+
     def __str__(self):
-        pass
+        card_string = ""
+        for card in self.deck:
+            card_string += card[0]+" of " +card[1] + "\n"
+        return(card_string)
+
 
     def shuffle(self):
         random.shuffle(self.deck)
 
     def deal(self):
-        Hand.add_card(deck.pop(0))
+        delt_card = self.deck.pop(0)
+        return delt_card
 
-class Hand:
-    def __init__(self,card):
+class Hand(Card):
+    def __init__(self):
         self.cards = []
         self.value = 0
         self.aces = 0
 
     def add_card(self,card):
+        Card.__init__(self,card)
         self.cards.append(card)
-        if card[1] == 'Ace':
+        print(self.cards)
+        if card[0] == 'Ace':
             self.aces += 1
 
     def adjust_for_ace(self):
@@ -50,14 +67,15 @@ class Chips:
         self.total = self.total-self.bet
 
 def take_bet():
-    Chips.self.bet()=int(input("How much do you want to bet?"))
-
-def hit(deck,hand):
-
+    #self.bet()=int(input("How much do you want to bet?"))
     pass
 
+def hit(deck,hand):
+    hand.add_card(deck.deal())
+
+
 def hit_or_stand(deck,hand):
-    global playing  # to control an upcoming while loop
+    global playing
 
     pass
 
@@ -83,3 +101,18 @@ def dealer_wins():
 
 def push():
     pass
+
+test_deck = Deck(suits,ranks)
+print(test_deck)
+test_deck.shuffle()
+print(test_deck)
+player_hand=Hand()
+player_hand.add_card(test_deck.deal())
+print(player_hand)
+player_hand.add_card(test_deck.deal())
+print(player_hand)
+dealer_hand=Hand()
+dealer_hand.add_card(test_deck.deal())
+print(dealer_hand)
+dealer_hand.add_card(test_deck.deal())
+print(dealer_hand)
