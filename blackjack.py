@@ -48,12 +48,19 @@ class Hand(Card):
     def add_card(self,card):
         Card.__init__(self,card)
         self.cards.append(card)
-        print(self.cards)
         if card[0] == 'Ace':
             self.aces += 1
+        self.value += values[card[0]]
 
     def adjust_for_ace(self):
-        pass
+        while True:
+            if self.aces > 0:
+                if self.value > 21:
+                    self.value += -10
+                    self.aces += -1
+                    print("Ace now equals 1")
+            else:
+                break
 
 class Chips:
     def __init__(self):
@@ -67,52 +74,108 @@ class Chips:
         self.total = self.total-self.bet
 
 def take_bet():
-    #self.bet()=int(input("How much do you want to bet?"))
-    pass
+    while True:
+        try:
+            player_chips.bet=int(input("How much do you want to bet?"))
+            if player_chips.bet > player_chips.total:
+                raise SystemError('ISF')
+            break
+        except SystemError:
+            print("You can't bet more than you have!")
+        except ValueError:
+            print("Please enter a vaild number.")
+
 
 def hit(deck,hand):
     hand.add_card(deck.deal())
 
 
 def hit_or_stand(deck,hand):
-    global playing
 
-    pass
+    if hand == 'player_hand':
+        while True:
+            hit_stand= input("Would you like to Hit or Stand? (enter Hit or Stand)")
+            if hit_stand == "Hit":
+                hit(deck, player_hand)
+            elif hit_stand == "Stand":
+                break
+            else:
+                print("Please enter either Hit or Stand")
+            show_all(player_hand.cards,dealer_hand.cards)
+            player_busts()
+    else:
+        while True:
+            if dealer_hand.value < 17:
+                hit(deck, dealer_hand)
+                dealer_busts()
+            else:
+                break
 
 def show_some(player,dealer):
 
-    pass
+    print("Dealer is showing")
+    print(Card(dealer_hand.cards[1]))
 
 def show_all(player,dealer):
 
-    pass
+    print("You have:")
+    for card in player:
+        print(Card(card))
+    print("Current total " + str(player_hand.value))
 
 def player_busts():
-    pass
+    if player_hand.value > 21:
+        print("Bust!")
+        player_chips.lose_bet()
 
 def player_wins():
-    pass
+    if player_hand.value <= 21 and dealer_hand.value <= 21:
+        if player_hand.value > dealer_hand.value:
+            print('You win!')
+            player_chips.win_bet()
 
 def dealer_busts():
-    pass
+    if dealer_hand.value > 21:
+        print("Dealer Bust!")
+        player_chips.win_bet()
 
 def dealer_wins():
-    pass
+    if dealer_hand.value <= 21 and player_hand.value <= 21:
+        if dealer_hand.value > player_hand.value:
+            print('You lost!')
+            player_chips.lose_bet()
 
 def push():
-    pass
+    if dealer_hand.value == player_hand.value:
+        print("Tie!")
 
-test_deck = Deck(suits,ranks)
-print(test_deck)
-test_deck.shuffle()
-print(test_deck)
-player_hand=Hand()
-player_hand.add_card(test_deck.deal())
-print(player_hand)
-player_hand.add_card(test_deck.deal())
-print(player_hand)
-dealer_hand=Hand()
-dealer_hand.add_card(test_deck.deal())
-print(dealer_hand)
-dealer_hand.add_card(test_deck.deal())
-print(dealer_hand)
+print("Welecome to Blackjack")
+player_chips = Chips()
+while True:
+    print("Shuffling and dealing cards")
+    playing_deck = Deck(suits,ranks)
+    playing_deck.shuffle()
+    player_hand = Hand()
+    player_hand.add_card(playing_deck.deal())
+    player_hand.add_card(playing_deck.deal())
+    dealer_hand = Hand()
+    dealer_hand.add_card(playing_deck.deal())
+    dealer_hand.add_card(playing_deck.deal())
+    take_bet()
+    show_some(player_hand.cards,dealer_hand.cards)
+    show_all(player_hand.cards,dealer_hand.cards)
+    while playing:
+        hit_or_stand(playing_deck,player_hand)
+        hit_or_stand(playing_deck,dealer_hand)
+        break
+    player.wins()
+    dealer.wins()
+    print("You now have " + str(player_chips.total) + " chips")
+    while True:
+        play_again=input("Do you want to play again?(Yes/No)")
+        if  play_again== "No":
+            break
+        elif play_again== "Yes":
+            break
+        else:
+            print("Please enter either Yes or No")
